@@ -10,8 +10,12 @@
     "url": "https://github.com/yukidaruma"
   },
   "license": "MIT",
+  "dependencies": {
+    "@splatoon-stats/types": "^1.0.2"
+  },
   "devDependencies": {
     "@types/google-apps-script": "^1.0.31",
+    "dotenv": "^9.0.1",
     "esbuild": "^0.11.10"
   }
 }
