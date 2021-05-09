@@ -1,4 +1,5 @@
 const { build: runBuild } = require('esbuild');
+require('dotenv').config();
 
 const ENTRYPOINT_FUNC_NAME = 'myFunction';
 
@@ -27,6 +28,7 @@ const buildOptions = {
 
   define: {
     DEBUG: debug,
+    SPLATNET_API_URL: JSON.stringify(process.env.SPLATNET_API_URL),
   },
   outfile: './build/main.js',
   watch: watch,
