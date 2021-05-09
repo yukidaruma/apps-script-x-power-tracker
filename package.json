@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "build": "node build",
-    "push": "node build && clasp push"
+    "watch": "node build --watch",
+    "push": "node build && clasp push",
+    "push:debug": "node build -- --debug --no-minify && clasp push"
   },
   "author": {
     "name": "yukidaruma",
