@@ -1,6 +1,6 @@
 {
-  "name": "esbuild-apps-script-template",
-  "version": "0.0.1",
+  "name": "apps-script-x-power-tracker",
+  "version": "1.0.0",
   "scripts": {
     "build": "node build",
     "watch": "node build --watch",
