@@ -1,29 +1,50 @@
-# esbuild-apps-script-template
+# apps-script-x-power-tracker
 
-Entrypoint function name is defined by `ENTRYPOINT_FUNC_NAME` in [build.js](build.js). By default, `myFunction` is the name of the function.
+> Track daily X Power change with Google Spreadsheet
 
-As of this commit, running [esbuild](https://github.com/evanw/esbuild) with `bundle` option set to `true` makes entrypoint wrapped in IIFE, making it impossible to declare global functions.
-To work around this, combine [banner](https://esbuild.github.io/api/#banner) and [footer](https://esbuild.github.io/api/#footer) to wrap IIFE with global function, so that Apps Script can recognize entrypoint function.
+## Installation
 
-## Setting up
+In order to use clasp CLI, you need to enable the "Google Apps Script API" in
+["Apps Script" settings](https://script.google.com/home/usersettings) first.
 
-1. First, you need to install [clasp](https://www.npmjs.com/package/@google/clasp) if not installed already:  
-   `npm i -g @google/clasp`
-2. Enable the "Google Apps Script API" in ["Apps Script" settings](https://script.google.com/home/usersettings).
-3. Create Apps Script attached to Spreadsheet.  
-   `clasp create --type sheets --title <title>`
+```sh
+# Install clasp CLI if not installed
+$ npm i -g @google/clasp
 
-   If you have no idea which [type](https://github.com/google/clasp/blob/4464f73465dd9697ae22fab81c42370ca98232c6/src/apis.ts#L10-L18) to choose from, you can simply omit the `--type` option and you'll get the prompt to select from.
+# Create Apps Script attached to a Spreadsheet
+$ clasp create xpowers --type Spreadsheet --title "X Powers Tracker"
 
-## Useful commands
-
-```
-# Open project in web browser
-$ clasp open
+# Create `.env` file and set `SPLATNET_API_URL` field
+$ cp .env.example .env
+$ $EDITOR .env
+SPLATNET_API_URL=https://[redacted]/api
 
 # Build and push the script
 $ npm run push
-
-# Run myFunction in your Apps Scripts project
-$ clasp run myFunction
 ```
+
+After successfully pushing the script, you need to create a sheet named "Players" (**case-sensitive**) in the following format:
+
+|       | A                        | B                        |
+| ----- | ------------------------ | ------------------------ |
+| **1** | `<first account's name>` | `<first account's iksm>` |
+| ...   |                          |                          |
+| **n** | `<nth account's name>`   | `<nth account's iksm>`   |
+
+Please see the image below for example:  
+<img src="doc/create-sheet-players.png" alt="Example image of &quot;Players&quot; sheet">
+
+- You can have as many accounts as you wish (though excessive number of players might hit the [Google Apps Script quota(s)](https://developers.google.com/apps-script/guides/services/quotas)).
+- The name will be used in sheet's name.
+  - Changing player name is **NOT** recommended, as it won't rename old sheets.
+- Do not include `<` or `>` in actual data.
+
+## Notes
+
+- If you want to share sheets with other people, you should make the "Players" sheet invisible. (Only Google account's with editor permission can view the sheet).  
+  See [Protect, hide, and edit sheets - Docs Editors Help](https://support.google.com/docs/answer/1218656) for further information.
+
+  **Warning**: Please be careful that the sheet will become and stay visible whenever you open the sheet.
+  Do not forget to hide the sheet again to avoid revealing iksm accidentally.
+
+- This project uses [yukidaruma/esbuild-apps-script-template](https://github.com/yukidaruma/esbuild-apps-script-template) as a template.
