@@ -37,15 +37,29 @@ responses.forEach((res, playerIndex) => {
   const powers = rankedRuleKeys.map((key) => data[key].my_ranking?.x_power ?? null);
   const rowData = [Utilities.formatDate(TODAY, 'UTC', 'yyyy/MM/dd'), ...powers];
   const lastRow = mySheet.getRange(lastRowIndex, 1, 1, rowData.length);
-  const lastDate = lastRow.getValue() as Date | '';
+  const [[lastDate, ...oldPowers]] = lastRow.getValues() as [[Date, ...number[]]];
+
+  let updated = false;
 
   if (lastDate && lastDate.getDate() === TODAY.getDate()) {
     // Update if exists
-    console.log(`Updating row ${lastRowIndex}.`);
-    lastRow.setValues([rowData]);
+
+    if (oldPowers.every((value, i) => value === powers[i])) {
+      console.log(`${playerName}: Power has not changed since last update.`);
+    } else {
+      updated = true;
+      console.log(`${playerName}: Updating row ${lastRowIndex}.`);
+      lastRow.setValues([rowData]);
+    }
   } else {
+    updated = true;
+
     // Insert if not exist
-    console.log(`Inserting row at ${lastRowIndex + 1}.`);
+    console.log(`${playerName}: Inserting row at ${lastRowIndex + 1}.`);
     mySheet.appendRow(rowData);
+  }
+
+  if (updated) {
+    console.log(`${playerName}: Updated record: ${powers.join(', ')}.`);
   }
 });
