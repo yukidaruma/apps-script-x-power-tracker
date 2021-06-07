@@ -17,7 +17,13 @@ if (TODAY.getHours() === 0) {
   TODAY.setUTCDate(TODAY.getDate() - 1);
 }
 
-const players = (getSheetByName('Players').getDataRange().getValues() as PlayersRow[]).filter(
+const playersSheet = getSheetByName('Players');
+// Hide players sheet if visible
+if (playersSheet.isSheetHidden()) {
+  playersSheet.hideSheet();
+}
+
+const players = (playersSheet.getDataRange().getValues() as PlayersRow[]).filter(
   // Skip for inactive player
   ([, , isInactive]) => !isInactive,
 );
