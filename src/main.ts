@@ -17,7 +17,10 @@ if (TODAY.getHours() === 0) {
   TODAY.setUTCDate(TODAY.getDate() - 1);
 }
 
-const players = getSheetByName('Players').getDataRange().getValues() as PlayersRow[];
+const players = (getSheetByName('Players').getDataRange().getValues() as PlayersRow[]).filter(
+  // Skip for inactive player
+  ([, , isInactive]) => !isInactive,
+);
 
 console.log(`Fetching X Rankings of ${players.length} player(s).`);
 
