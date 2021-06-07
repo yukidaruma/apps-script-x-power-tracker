@@ -47,4 +47,6 @@ Please see the image below for example:
   **Warning**: Please be careful that the sheet will become and stay visible whenever you open the sheet.
   Do not forget to hide the sheet again to avoid revealing iksm accidentally.
 
+  **Note**: Since version 1.0.1, this script hides "Players" sheet if the sheet is visible.
+
 - This project uses [yukidaruma/esbuild-apps-script-template](https://github.com/yukidaruma/esbuild-apps-script-template) as a template.
